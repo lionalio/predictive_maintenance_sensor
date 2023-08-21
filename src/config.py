@@ -1,9 +1,15 @@
 import os
 
 PATH_RAW_DATA = '../data/raw/'
+PATH_PROCESSED_DATA = '../data/processed/'
+PATH_MODEL = '../models/'
 
 PATH_TRAIN = os.path.join(PATH_RAW_DATA, 'PM_train.txt')
 PATH_TEST = os.path.join(PATH_RAW_DATA, 'PM_test.txt')
+
+
+name_scaler = 'scaler.gz'
+PATH_SCALER = os.path.join(PATH_MODEL, name_scaler)
 
 columns = ['id', 'cycle', 'setting1', 'setting2', 'setting3', 
             's1', 's2', 's3', 's4', 's5', 

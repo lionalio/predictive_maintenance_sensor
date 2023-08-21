@@ -35,21 +35,17 @@ def get_labeling(y, window, label):
     return data_matrix[window:num_elements, :]
 
 
-def create_train_test(X, y, ids, split, timeline):
-    pass
-
-
 def data_transform(data, features, label, scaler, window, is_label=False):
     if not is_label:
         data[features] = scaler.transform(data[features])
         gen_data = [
-            list(get_sequence(data[data['machineID'] == idx], window)) 
-            for idx in data['machineID'].unique()
+            list(get_sequence(data[data['id'] == idx], window)) 
+            for idx in data['id'].unique()
             ]
     else:
         gen_data =[
-            list(get_labeling(data[data['machineID'] == idx], window, [label]))
-            for idx in data['machineID'].unique()
+            list(get_labeling(data[data['id'] == idx], window, [label]))
+            for idx in data['id'].unique()
         ]
 
     data_final = np.concatenate(list(gen_data)).astype(np.float32)
@@ -58,4 +54,25 @@ def data_transform(data, features, label, scaler, window, is_label=False):
 
 
 if __name__ == '__main__':
-    pass
+    train, test = load_data(PATH_TRAIN, PATH_TEST)
+
+    scaler = get_scaling(train, features, PATH_SCALER)
+
+    X_train = data_transform(train, features, 'label', scaler, period, is_label=False)
+    y_train = data_transform(train, features, 'label', scaler, period, is_label=True)
+    X_test = data_transform(test, features, 'label', scaler, period, is_label=False)
+    y_test = data_transform(test, features, 'label', scaler, period, is_label=True)
+
+    print(X_train.shape)
+    print(y_train.shape)
+    print(X_test.shape)
+    print(y_test.shape)
+
+    with open(os.path.join(PATH_RAW_DATA, '/X_train.pkl'), 'wb') as f1:
+        pkl.dump(X_train, f1)
+    with open(os.path.join(PATH_RAW_DATA, '/y_train.pkl'), 'wb') as f2:
+        pkl.dump(y_train, f2)
+    with open(os.path.join(PATH_RAW_DATA, '/X_test.pkl'), 'wb') as f3:
+        pkl.dump(X_test, f3)
+    with open(os.path.join(PATH_RAW_DATA, '/y_test.pkl'), 'wb') as f4:
+        pkl.dump(y_test, f4)
