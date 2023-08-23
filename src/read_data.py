@@ -16,11 +16,11 @@ def load_data(path_train, path_test):
     train = train.merge(rul, on=['id'], how='left')
     train['RUL'] = train['max_cycle'] - train['cycle']
     train.drop('max_cycle', axis=1, inplace=True)
-    train['label'] = train['RUL'].apply(lambda x: 1 if x <= period else 0)
+    train[label] = train['RUL'].apply(lambda x: 1 if x <= period else 0)
 
     test = test.merge(rul, on=['id'], how='left')
     test['RUL'] = test['max_cycle'] - test['cycle']
-    test['label'] = test['RUL'].apply(lambda x: 1 if x <= period else 0)
+    test[label] = test['RUL'].apply(lambda x: 1 if x <= period else 0)
     test.drop('max_cycle', axis=1, inplace=True)
 
     return train, test

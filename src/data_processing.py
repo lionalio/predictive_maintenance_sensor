@@ -3,6 +3,12 @@ from read_data import *
 
 
 def get_scaling(X_train, features, namesave):
+    if os.path.isfile(namesave):
+        print('Scaler has already existed. Loading...')
+        scaler = joblib.load(namesave)
+        return scaler
+    
+    print('Scaler not yet trained. Creating one from train data')
     scaler = MinMaxScaler()
     scaler.fit(X_train[features])
     joblib.dump(scaler, namesave)
@@ -58,10 +64,10 @@ if __name__ == '__main__':
 
     scaler = get_scaling(train, features, PATH_SCALER)
 
-    X_train = data_transform(train, features, 'label', scaler, period, is_label=False)
-    y_train = data_transform(train, features, 'label', scaler, period, is_label=True)
-    X_test = data_transform(test, features, 'label', scaler, period, is_label=False)
-    y_test = data_transform(test, features, 'label', scaler, period, is_label=True)
+    X_train = data_transform(train, features, label, scaler, period, is_label=False)
+    y_train = data_transform(train, features, label, scaler, period, is_label=True)
+    X_test = data_transform(test, features, label, scaler, period, is_label=False)
+    y_test = data_transform(test, features, label, scaler, period, is_label=True)
 
     print(X_train.shape)
     print(y_train.shape)

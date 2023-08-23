@@ -11,6 +11,10 @@ PATH_TEST = os.path.join(PATH_RAW_DATA, 'PM_test.txt')
 name_scaler = 'scaler.gz'
 PATH_SCALER = os.path.join(PATH_MODEL, name_scaler)
 
+name_model = 'transformer.keras'
+PATH_SAVED_MODEL = os.path.join(PATH_MODEL, name_model)
+
+
 columns = ['id', 'cycle', 'setting1', 'setting2', 'setting3', 
             's1', 's2', 's3', 's4', 's5', 
             's6', 's7', 's8', 's9', 's10', 
@@ -20,4 +24,5 @@ columns = ['id', 'cycle', 'setting1', 'setting2', 'setting3',
             ]
 
 features = [f for f in columns if f not in ['id', 'cycle', 'setting1', 'setting2', 'setting3']]
+label = 'label'
 period=30
