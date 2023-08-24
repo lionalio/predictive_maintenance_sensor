@@ -27,8 +27,14 @@ def get_sequence(X, window):
     # 2 52 -> from row 2 to row 52
     # ...
     # 141 191 -> from row 141 to 191
-    for start, stop in zip(range(0, n_elements-window), range(window, n_elements)):
+    #lstm_array=[]
+    for start, stop in zip(range(0, n_elements - window), range(window, n_elements)):
+        #if start % 10 == 0:
+        #    print(start, stop)
         yield data_matrix[start:stop, :]
+        #lstm_array.append(data_matrix[start:stop, :])
+
+    #return np.array(lstm_array)
 
 
 def get_labeling(y, window, label):
@@ -49,12 +55,19 @@ def data_transform(data, features, label, scaler, window, is_label=False):
             for idx in data['id'].unique()
             ]
     else:
-        gen_data =[
+        gen_data = [
             list(get_labeling(data[data['id'] == idx], window, [label]))
             for idx in data['id'].unique()
         ]
+    
+    # Remove the zero indices (non-exist index)
+    final_list = []
+    for d in gen_data:
+        if len(d) == 0:
+            continue
+        final_list.append(d)
 
-    data_final = np.concatenate(list(gen_data)).astype(np.float32)
+    data_final = np.concatenate(list(final_list)).astype(np.float32)
 
     return data_final
 

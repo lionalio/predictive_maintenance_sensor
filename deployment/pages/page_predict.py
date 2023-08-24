@@ -34,11 +34,13 @@ def main_predict_page():
     #url_meta = st.input_text('url of meta:')
 
 
-    uploaded_file = st.file_uploader("Choose a historical file")
+    uploaded_file = st.file_uploader("Choose a file for prediction")
     if uploaded_file is not None:
-        input = pd.read_csv(uploaded_file)
+        input = pd.read_csv(uploaded_file, sep=' ', header=None)
+        input = process_columns(input)
         #st.write(input)
-        prediction(input, features, targets[0])
+        func_predict(input, features, label)
+        
 
 
 if __name__ == "__main__":

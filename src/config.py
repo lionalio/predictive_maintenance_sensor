@@ -23,6 +23,6 @@ columns = ['id', 'cycle', 'setting1', 'setting2', 'setting3',
             's21'
             ]
 
-features = [f for f in columns if f not in ['id', 'cycle', 'setting1', 'setting2', 'setting3']]
+features = [f for f in columns if f not in ['id', 'cycle', 'RUL']]
 label = 'label'
-period=30
+period = 50

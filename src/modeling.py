@@ -37,12 +37,12 @@ def create_model(input_shape, n_classes, head_size, num_heads, ff_dim,
     return keras.Model(inputs, outputs)
 
 
-def train_model(X_tr, y_tr, input_shape, n_classes):
+def train_model(X_tr, y_tr, input_shape, n_classes, name_saved='../models/transformer.keras'):
     model = create_model(
         input_shape, n_classes,
         head_size=64, num_heads=4,
-        ff_dim=4, num_transformer_blocks=2,
-        mlp_units=[64],
+        ff_dim=4, num_transformer_blocks=4,
+        mlp_units=[64, 32],
         mlp_dropout=0.2,
         dropout=0.25,
     )
@@ -67,19 +67,33 @@ def train_model(X_tr, y_tr, input_shape, n_classes):
         batch_size=128, callbacks=callbacks,
     )
 
-    model.save('../models/transformer.keras')
+    model.save(name_saved)
 
 
 if __name__ == '__main__':
     train, test = load_data(PATH_TRAIN, PATH_TEST)
 
     scaler = get_scaling(train, features, PATH_SCALER)
+    print('x_train')
+    print(train.shape)
     X_train = data_transform(
         train, features, label,
         scaler, period, is_label=False
     )
+    print('y_train')
     y_train = data_transform(
         train, features, label,
+        scaler, period, is_label=True
+    )
+    print('x_test')
+    print(test.shape)
+    X_test = data_transform(
+        test, features, label,
+        scaler, period, is_label=False
+    )
+    print('y_test')
+    y_test = data_transform(
+        test, features, label,
         scaler, period, is_label=True
     )
 
@@ -87,8 +101,12 @@ if __name__ == '__main__':
 
     print(X_train.shape)
     print(y_train.shape)
-    print(np.unique(y_train))
     input_shape = X_train.shape[1:]
     n_classes = y_train.shape[1]
 
     train_model(X_train, y_train, input_shape, n_classes)
+    model = keras.models.load_model('../models/transformer.keras')
+    print(model.evaluate(X_test, y_test, verbose=1))
+    preds = np.argmax(model.predict(X_test), axis=1)
+    #for idx, preds in zip(X_test, preds):
+    print(np.unique(preds))
