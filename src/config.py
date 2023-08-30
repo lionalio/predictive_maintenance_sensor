@@ -11,7 +11,7 @@ PATH_TEST = os.path.join(PATH_RAW_DATA, 'PM_test.txt')
 name_scaler = 'scaler.gz'
 PATH_SCALER = os.path.join(PATH_MODEL, name_scaler)
 
-name_model = 'transformer.keras'
+name_model = 'lstm' #'transformer.keras'
 PATH_SAVED_MODEL = os.path.join(PATH_MODEL, name_model)
 
 

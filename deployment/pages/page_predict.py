@@ -1,30 +1,19 @@
 import sys
 sys.path.append('../../src/')
-
+sys.path.append('../')
 from libs import *
 from config import *
 from data_processing import *
 import streamlit as st
+from app import func_predict
 
-model = keras.models.load_model(PATH_SAVED_MODEL)
-scaler = joblib.load(PATH_SCALER)
+#model = mlflow.keras.load_model(PATH_SAVED_MODEL)
+#scaler = joblib.load(PATH_SCALER)
 
 params = dict(
-    period=30
+    period=50
 )
 
-def func_predict(input_data, features, label):
-    X = data_transform(
-        input_data, features, label, 
-        scaler, params['period'], is_label=False
-        )
-    
-    preds = model.predict(X)
-    classes = np.argmax(preds, axis = 1)
-    #classes = model.predict(X, verbose=1, batch_size=128)
-    for i in range(X.shape[0]):
-        status = 'OK' if classes[i] == 0 else 'Need reparing'
-        st.write('predicting machine {} status: {}'.format(i, status))
 
 
 def main_predict_page():
@@ -40,7 +29,6 @@ def main_predict_page():
         input = process_columns(input)
         #st.write(input)
         func_predict(input, features, label)
-        
 
 
 if __name__ == "__main__":

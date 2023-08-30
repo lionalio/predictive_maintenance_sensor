@@ -6,12 +6,15 @@ import json
 import requests
 import io
 import joblib
+import mlflow
+import mlflow.keras
 
 from sklearn.preprocessing import MinMaxScaler
 
 from tensorflow import keras
 from tensorflow.keras.layers import (
     LayerNormalization, MultiHeadAttention, GlobalAveragePooling1D,
+    LSTM,
     Dropout, Conv1D, Dense
 )
 from tensorflow.keras.callbacks import EarlyStopping

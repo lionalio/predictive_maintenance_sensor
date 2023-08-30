@@ -4,6 +4,8 @@ numpy>=1.21.0
 tensorflow>=2.10.0
 matplotlib>=3.2.0
 scikit-learn>=1.2.0
-#fastapi>=0.100.0
-#univcorn>=0.21.0
+pydantic==1.10.9
+fastapi>=0.100.0
+univcorn>=0.21.0
+python-multipart>=0.0.6
 streamlit>=1.21.0
